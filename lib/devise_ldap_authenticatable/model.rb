@@ -107,6 +107,23 @@ module Devise
           puts "UPDATE_WITH_PASSWORD: #{resource.inspect}"
         end
 
+        def serialize_from_session(id)
+          unless ::Devise.use_remote_only
+            super id
+          else
+            resource = self.new
+            resource.id = id
+            resource
+          end
+        end
+
+        def serialize_into_session(record)
+          unless ::Devise.use_remote_only
+            super id
+          else
+            [record.id]
+          end
+        end
       end
     end
   end
